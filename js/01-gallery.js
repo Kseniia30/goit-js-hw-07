@@ -35,7 +35,7 @@ const onContainerClick = (e) => {
     <div >
         <a style="color:#fff; cursor:pointer">Escape</a>
         <br>
-        <img src="${source}"width="800" height="600">
+        <img src="${source}"width="621" height="414">
         
     </div>
 `, {
