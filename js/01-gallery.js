@@ -25,6 +25,15 @@ function createImagesMarkup(galleryItems) {
     .join("");
 }
 
+function closeF(e){
+  if (e.keyCode === 27) {
+  hidden=1;
+  }
+  return
+}
+
+
+
 const onContainerClick = (e) => {
   e.preventDefault();
 
@@ -32,18 +41,11 @@ const onContainerClick = (e) => {
     const source = e.target.dataset.source;
     
   const instance = basicLightbox.create(`
-    <div >
-        <a style="color:#fff; cursor:pointer">Escape</a>
-        <br>
-        <img src="${source}"width="621" height="414">
-        
-    </div>
-`, {
-    onShow: (instance) => {
-        instance.element().querySelector('a').onclick = instance.close
-    }
-})
+    <img src="${source}"width="621" height="414">`,
+  )
 instance.show();
 };
+  
 
 galleryList.addEventListener("click", onContainerClick);
+
