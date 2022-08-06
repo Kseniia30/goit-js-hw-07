@@ -4,40 +4,46 @@ import { galleryItems } from './gallery-items.js';
 console.log(galleryItems);
 
 
-{/* <div class="gallery__item">
-  <a class="gallery__link" href="large-image.jpg">
-    <img
-      class="gallery__image"
-      src="small-image.jpg"
-      data-source="large-image.jpg"
-      alt="Image description"
-    />
-  </a>
-</div> */}
+const galleryList = document.querySelector(".gallery");
+const createMarkup = createImagesMarkup(galleryItems);
+galleryList.insertAdjacentHTML("beforeend", createMarkup);
 
-const galleryList = document.querySelector('.gallery');
-
-galleryList.addEventListener("handleClick", selectedImage())
-
-function selectedImage(event) {
-    console.log("this is me");
+function createImagesMarkup(galleryItems) {
+  return galleryItems
+    .map(({ preview, original, description }) => {
+      return `<div class="gallery__item">
+      <a class="gallery__link" href="${original.value}">
+        <img
+          class="gallery__image"
+          src="${preview}"
+          data-source="${original}"
+          alt="${description}"
+        />
+      </a>
+    </div>`;
+    })
+    .join("");
 }
 
-const imageList = galleryItems.map(galleryItem => {
-    return `<a href="${galleryItem.original}" rel="nofollow"><img scr="${galleryItem.preview}" data-course="${galleryItem.original}" alt="${galleryItem.description}"></a>`
+const onContainerClick = (e) => {
+  e.preventDefault();
+
+  if (e.target.classList.contains("gallery")) return;
+    const source = e.target.dataset.source;
+    
+  const instance = basicLightbox.create(`
+    <div >
+        <a style="color:#fff; cursor:pointer">Escape</a>
+        <br>
+        <img src="${source}"width="800" height="600">
+        
+    </div>
+`, {
+    onShow: (instance) => {
+        instance.element().querySelector('a').onclick = instance.close
+    }
 })
+instance.show();
+};
 
-galleryList.insertAdjacentHTML("beforeend", imageList)
-
-const links = document.querySelectorAll(".gallery a")
-console.log(links);
-
-for (const link of links) {
-    console.log(link.classList);
-    link.classList.add("gallery__item")
-}
-
-const images = document.querySelectorAll(".gallery__item img")
-for (const image of images) {
-    image.classList.add("gallery__image")
-}
+galleryList.addEventListener("click", onContainerClick);
