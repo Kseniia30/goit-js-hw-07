@@ -36,12 +36,25 @@ function closeF(e){
 
 const onContainerClick = (e) => {
   e.preventDefault();
-
+  
   if (e.target.classList.contains("gallery")) return;
     const source = e.target.dataset.source;
-    
+    let modalKeyDown;
   const instance = basicLightbox.create(`
     <img src="${source}"width="621" height="414">`,
+  
+    {
+      onShow: (instance) => {
+        document.body.style.overflow = 'hidden';
+        window.addEventListener('keydown', modalKeyDown = function (evt) {
+          if (evt.code === 'Escape')
+            instance.close();
+        })
+      }, onClose: () => {
+        document.body.style.overflow = 'visible';
+        window.removeEventListener('keydown', modalKeyDown)
+      }
+    }
   )
 instance.show();
 };
